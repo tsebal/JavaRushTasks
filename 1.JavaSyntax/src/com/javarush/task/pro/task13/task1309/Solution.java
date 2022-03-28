@@ -16,7 +16,7 @@ public class Solution {
 
     public static void addStudents() {
         grades.put("Vasya Petrov", 4.3);
-        grades.put("Vova Botanov", 5d);
+        grades.put("Vova Botanob", 5d);
         grades.put("Anton Bich", 3.7);
         grades.put("Valeriy Freeman", 4.1);
         grades.put("Elena Erokhina", 4.6);
