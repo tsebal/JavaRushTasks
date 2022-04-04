@@ -22,20 +22,20 @@ public class Solution {
         try (FileChannel inputChannel = FileChannel.open(Paths.get(fileName), StandardOpenOption.READ)) {
             ByteBuffer byteBuffer = ByteBuffer.allocate(partSize);
             int fileParts = (int) Math.ceil(inputChannel.size() / partSize);
-            for (int i = 1; i <= fileParts; i++) {
+            for (int i = 1; i <= fileParts + 1; i++) {
                 String newFileName = getNewFileName(fileName, i);
-                Path newFilePath = Path.of(newFileName);
-
-                Files.createFile(newFilePath);
-                inputChannel.read(byteBuffer);
-                byteBuffer.flip();
-                try (FileChannel outputChannel = FileChannel.open(Paths.get(newFileName),
-                        StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)) {
-                    outputChannel.write(byteBuffer);
+                Path newFilePath = Paths.get(newFileName);
+                if (Files.notExists(newFilePath)) {
+                    Files.createFile(newFilePath);
                 }
-                byteBuffer.flip();
+                inputChannel.read(byteBuffer);
+                try (FileChannel outputChannel = FileChannel.open(newFilePath,
+                        StandardOpenOption.WRITE)) {
+                    byteBuffer.flip();
+                    outputChannel.write(byteBuffer);
+                    byteBuffer.clear();
+                }
             }
-
         }
     }
 
